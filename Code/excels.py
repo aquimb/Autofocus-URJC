@@ -5,7 +5,7 @@ from openpyxl.chart import LineChart, Reference
 import math
 
 # This part must be filled and uncomented 
-***
+"""
 
 direct_res = Path to the results of the analysis
 tissue = ["Adipose/", "Stomach/", "Intestine/", "Kidney/"]
@@ -14,7 +14,7 @@ depth = ["8 bits/", "16 bits/"]
 num_criteria = 4   # Number of criteria evaluated: Accuracy, Range, False maxima, FWHW
 num_algs = 15    # Number of algorithms to evaluate
 
-***
+"""
 
 
 # Names of the algorithms
@@ -223,7 +223,7 @@ for tiss in range(4):  # Tissues studied: Adipose, Stomach, Intestine, Kidney (4
                 columna = columna + 5
 
                 # Creates the chart showing the data
-                values = Reference(sheet, min_col=1, min_row=1, max_col=row_length, max_row=15)
+                values = Reference(sheet, min_col=1, min_row=1, max_col=row_length-1, max_row=15)
                 chart = LineChart()
                 chart.add_data(values, from_rows=True, titles_from_data=True)
                 sheet.add_chart(chart, "L18")

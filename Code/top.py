@@ -9,10 +9,10 @@ import cv2.cv2 as cv2
 # This part must be filled and uncomented 
 ***
 
-n = 1388
-m = 1040
-l = 256
-sigma = 2
+m = 1040  # Number of lines per image
+n = 1388  # Number of pixels per line
+l = 256   # Number of bins in the histogram
+sigma = 2   # Sigma value for First Gaussian derivative algorithm
 num_criteria = 4   # Number of criteria evaluated: Accuracy, Range, False maxima, FWHW
 num_algs = 15    # Number of algorithms to evaluate
 
@@ -21,6 +21,10 @@ direct_res = Path to save the results of the analysis
 tissue = ["Adipose/", "Stomach/", "Intestine/", "Kidney/"]
 magnification = ["5x/", "10x/"]
 depth = ["8 bits/", "16 bits/"]
+
+***
+
+
 global path
 global path_res
 global num_stacks
@@ -32,28 +36,32 @@ def play_algs():
         norm_data_table = [[0. for i in range(num_imgs[k])] for j in range(num_algs)]
         time_table = [[0. for i in range(num_imgs[k])] for j in range(num_algs)]
 
-        f = open(path_res + "crit_table" + str(k) + ".txt", 'a')
+		# Creates a .txt document for each stack with the contrast results of all the algorithms (data<>.txt)
         f2 = open(path_res + "data" + str(k) + ".txt", 'a')
-        f.write('Algoritmo;Metrica 1;Metrica 2;Metrica 3;Metrica 4;Tiempo\n')
+		# Creates a .txt document for each stack with the criteria evaluation (crit_table<>.txt)
+        f = open(path_res + "crit_table" + str(k) + ".txt", 'a')
+        f.write('Algorithm;Accuracy;Range;False maxima;FWHW;Time\n') 
 
         for i in range(num_imgs[k]):
+			# Opens an image
             cadena = path + "S" + str(k + 1) + "/" + str(i + 1) + ".tif"
             img = cv2.imread(cadena, -1)
-            # cropped = img[409:1637, 409:1637]
-            cropped = img
-            p = np.int64(cropped)
-            mean = cv2.mean(cropped)[0]
+            p = np.int64(img)
+            mean = cv2.mean(img)[0]
 
+			# Calculates the contrast value for all the algorithms, defining the contrast functions
             for j in range(num_algs):
                 point1 = (time.time() * 1000)
-                alg_table[j][i] = algorithms_opt[j](m, n, thres[j], l, sigma, mean, p, cropped, hist_range)
+                alg_table[j][i] = algorithms_opt[j](m, n, thres[j], l, sigma, mean, p, img, hist_range)
                 point2 = (time.time() * 1000)
-
+				
+				# The execution time for each algorithm is measured, but will not be included in the analysis 
                 time_table[j][i] = point2 - point1
 
             print("Done img ", i)
         print("Done stack ", k)
 
+		# Evaluates the resulting contrast functions with the criteria and writes the results in crit_table<>.txt
         for j in range(num_algs):
             crit_table[k][j][:] = np.array((analysis(alg_table[j][:], real_maxs[k], k)))
             f.write(names[j])
@@ -63,6 +71,7 @@ def play_algs():
             f.write(';' + str(mean_t) + '\n')
         f.close()
 
+		# Normalizes the values of the contrast functions for a better graphic representation, and writes them in data<>.txt
         for j in range(num_algs):
             f2.write(names[j])
             mean2 = np.mean(alg_table[j])
@@ -75,6 +84,7 @@ def play_algs():
         f2.close()
 
 
+# This function is used by analysis() to calculate the maximum range of the contrast functions
 def range_max(alg, max_x):
     mins = (scipy.signal.argrelmin(alg))[0]
 
@@ -90,11 +100,20 @@ def range_max(alg, max_x):
     return dcha - izq
 
 
+# This function applies the criteria to the calculated contrast functions
 def analysis(alg, real_max, k):
     max_point_x = np.argmax(alg)
     max_point_y = max(alg)
     min_point_y = min(alg)
     h_tot = max_point_y - min_point_y
+	
+	"""
+	The anlysis automatically gives the worst score to the contrast functions that have any of the following features:
+	- Do not have a maximum
+	- Even when they have a maximum, its value is not the maximum value in the series (maximum value != maximum point)
+	- Even when the maximum is the maximum value in the series, its height is less than the 20% of the height range of the series
+	
+	"""
 
     array = np.array(alg)
     peaks, _ = scipy.signal.find_peaks(array)
@@ -107,7 +126,6 @@ def analysis(alg, real_max, k):
         if (max_x == max_point_x) and (h_peak >= (0.2 * h_tot)):
             acc = abs(real_max - max_x)
             ran = num_imgs[k] - 1 - range_max(array, max_x)
-            # ran = ((scipy.signal.peak_widths(array, [np.array(max_x)], rel_height=1))[0])[0]
             fal = peaks.size - 1
             wid = ((scipy.signal.peak_widths(array, [np.array(max_x)], rel_height=0.5))[0])[0]
             return [acc, ran, fal, wid]
@@ -117,6 +135,7 @@ def analysis(alg, real_max, k):
         return [num_imgs[k], num_imgs[k], num_imgs[k], num_imgs[k]]
 
 
+# This function ranks the each criterion in the criteria tables
 def ranking(crit_table):
     table = [0 for j in range(num_algs)]
     arr_res = [0 for j in range(num_algs)]
@@ -138,6 +157,7 @@ def ranking(crit_table):
             rank_table[k, :, c] = arr_res
 
 
+# This function performs the Semi Quantitative analysis, creates and writes the results in 
 def semi_quant(crit_table):
     semi_table = np.array([[0. for a in range(num_criteria)] for b in range(num_algs)])
     results_semi = np.array([0. for b in range(num_algs)])
@@ -150,7 +170,7 @@ def semi_quant(crit_table):
 
     f = open(path_res + "semi_table.txt", 'a')
 
-    f.write('Algoritmo;Metrica 1;Metrica 2;Metrica 3;Metrica 4\n')
+    f.write('Algorithm;Accuracy;Range;False maxima;FWHW\n')
     for j in range(num_algs):
         f.write(names[j])
         for c in range(num_criteria):
@@ -185,7 +205,7 @@ def quant(crit_table):
 
     f = open(path_res + "quant_table.txt", 'a')
 
-    f.write('Algoritmo;Metrica 1;Metrica 2;Metrica 3;Metrica 4\n')
+    f.write('Algoritmo;Accuracy;Range;False maxima;FWHW\n')
     for j in range(num_algs):
         f.write(names[j])
         for c in range(num_criteria):

@@ -2,28 +2,28 @@ import numpy as np
 import cv2.cv2 as cv2
 import math
 
-***
+"""
 
 The algorithms are optimized to perform matrix operations whenever possible.
 All algorithms must have the same parameters, as they are called in a loop from an array.
 The parameters used are:
 
-m: Number of pixels per line
-n: Number of lines per image
+m: Number of lines per image
+n: Number of pixels per line
 thres: Threshold value used, in case the algorithms has one
 l: Number of bins in the histogram
 sigma: Sigma value for First Gaussian derivative algorithm
 mean: Mean value of all the pixels in the image
 p: int64 codification image
-cropped: Raw image
+img: Raw image
 hist_range: Range for the histogram, based on pixel depth (0-255 for 8 bit images or 0-65525 for 16 bit images)
 
-***
+"""
 
-def abs_tenengrad(m, n, thres, l, sigma, mean, p, cropped, hist_range):
+def abs_tenengrad(m, n, thres, l, sigma, mean, p, img, hist_range):
     sum1 = 0
-    sobelx = cv2.Sobel(cropped, cv2.CV_64F, 1, 0, ksize=3)
-    sobely = cv2.Sobel(cropped, cv2.CV_64F, 0, 1, ksize=3)
+    sobelx = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=3)
+    sobely = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=3)
 
     sx = abs(np.int64(sobelx))
     sy = abs(np.int64(sobely))
@@ -35,7 +35,7 @@ def abs_tenengrad(m, n, thres, l, sigma, mean, p, cropped, hist_range):
     return sum1
 
 
-def brener_grad(m, n, thres, l, sigma, mean, p, cropped, hist_range):
+def brener_grad(m, n, thres, l, sigma, mean, p, img, hist_range):
     sum3 = 0
     for j in range(n - 2):
         sum1 = abs(p[:, j + 1] - p[:, j])
@@ -47,7 +47,7 @@ def brener_grad(m, n, thres, l, sigma, mean, p, cropped, hist_range):
     return sum3
 
 
-def entropy(m, n, thres, l, sigma, mean, p, cropped, hist_range):
+def entropy(m, n, thres, l, sigma, mean, p, img, hist_range):
     sum1 = 0
     hist = np.histogram(p, bins=l, range=[0, hist_range])[0]
     prob_hist = hist / (m*n)
@@ -59,7 +59,7 @@ def entropy(m, n, thres, l, sigma, mean, p, cropped, hist_range):
     return -sum1
 
 
-def first_gauss_der(m, n, thres, l, sigma, mean, p, cropped, hist_range):
+def first_gauss_der(m, n, thres, l, sigma, mean, p, img, hist_range):
     sum1 = 0
     sum2 = 0
     gx = [None] * n
@@ -79,7 +79,7 @@ def first_gauss_der(m, n, thres, l, sigma, mean, p, cropped, hist_range):
     return sum3 / (m * n)
 
 
-def img_power(m, n, thres, l, sigma, mean, p, cropped, hist_range):
+def img_power(m, n, thres, l, sigma, mean, p, img, hist_range):
     ps = p ** 2
     sum1 = 0
     for i in range(m):
@@ -90,8 +90,8 @@ def img_power(m, n, thres, l, sigma, mean, p, cropped, hist_range):
     return sum1
 
 
-def laplacian(m, n, thres, l, sigma, mean, p, cropped, hist_range):
-    lap = cv2.Laplacian(cropped, cv2.CV_64F)
+def laplacian(m, n, thres, l, sigma, mean, p, img, hist_range):
+    lap = cv2.Laplacian(img, cv2.CV_64F)
     lap = np.int64(lap)
     sum1 = 0
     for i in range(1, m - 1):
@@ -101,7 +101,7 @@ def laplacian(m, n, thres, l, sigma, mean, p, cropped, hist_range):
     return sum1
 
 
-def norm_variance(m, n, thres, l, sigma, mean, p, cropped, hist_range):
+def norm_variance(m, n, thres, l, sigma, mean, p, img, hist_range):
     pa = abs(p - mean)
 
     sum1 = 0
@@ -112,7 +112,7 @@ def norm_variance(m, n, thres, l, sigma, mean, p, cropped, hist_range):
     return sum1 / (m * n * mean)
 
 
-def sq_grad(m, n, thres, l, sigma, mean, p, cropped, hist_range):
+def sq_grad(m, n, thres, l, sigma, mean, p, img, hist_range):
     sum2 = 0
     for j in range(n - 1):
         sum1 = abs(p[:, j + 1] - p[:, j])
@@ -123,10 +123,10 @@ def sq_grad(m, n, thres, l, sigma, mean, p, cropped, hist_range):
     return sum2
 
 
-def tenengrad(m, n, thres, l, sigma, mean, p, cropped, hist_range):
+def tenengrad(m, n, thres, l, sigma, mean, p, img, hist_range):
     sum1 = 0
-    sobelx = cv2.Sobel(cropped, cv2.CV_64F, 1, 0, ksize=3)
-    sobely = cv2.Sobel(cropped, cv2.CV_64F, 0, 1, ksize=3)
+    sobelx = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=3)
+    sobely = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=3)
 
     sx = (np.int64(sobelx)) ** 2
     sy = (np.int64(sobely)) ** 2
@@ -138,7 +138,7 @@ def tenengrad(m, n, thres, l, sigma, mean, p, cropped, hist_range):
     return sum1
 
 
-def thres_abs_grad(m, n, thres, l, sigma, mean, p, cropped, hist_range):
+def thres_abs_grad(m, n, thres, l, sigma, mean, p, img, hist_range):
     sum2 = 0
     for j in range(n - 1):
         sum1 = abs(p[:, j + 1] - p[:, j])
@@ -149,7 +149,7 @@ def thres_abs_grad(m, n, thres, l, sigma, mean, p, cropped, hist_range):
     return sum2
 
 
-def thres_pix_count(m, n, thres, l, sigma, mean, p, cropped, hist_range):
+def thres_pix_count(m, n, thres, l, sigma, mean, p, img, hist_range):
     pr = p - thres
     sum1 = 0
     for i in range(m):
@@ -160,7 +160,7 @@ def thres_pix_count(m, n, thres, l, sigma, mean, p, cropped, hist_range):
     return sum1
 
 
-def variance(m, n, thres, l, sigma, mean, p, cropped, hist_range):
+def variance(m, n, thres, l, sigma, mean, p, img, hist_range):
     pa = abs(p - mean)
 
     sum1 = 0
@@ -171,7 +171,7 @@ def variance(m, n, thres, l, sigma, mean, p, cropped, hist_range):
     return sum1 / (m * n)
 
 
-def variance_log_hist(m, n, thres, l, sigma, mean, p, cropped, hist_range):
+def variance_log_hist(m, n, thres, l, sigma, mean, p, img, hist_range):
     var = 0
     suma = 0
     hist = np.histogram(p, bins=l, range=[0, hist_range])[0]
@@ -197,7 +197,7 @@ def variance_log_hist(m, n, thres, l, sigma, mean, p, cropped, hist_range):
     return var
 
 
-def vollath4(m, n, thres, l, sigma, mean, p, cropped, hist_range):
+def vollath4(m, n, thres, l, sigma, mean, p, img, hist_range):
     sum1 = 0
     sum2 = 0
     for i in range(m - 1):
@@ -214,7 +214,7 @@ def vollath4(m, n, thres, l, sigma, mean, p, cropped, hist_range):
     return res
 
 
-def vollath5(m, n, thres, l, sigma, mean, p, cropped, hist_range):
+def vollath5(m, n, thres, l, sigma, mean, p, img, hist_range):
     sum1 = 0
     for i in range(m - 1):
         sum1 = sum1 + (p[i] * p[i + 1]) - (mean ** 2)
