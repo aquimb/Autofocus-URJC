@@ -7,7 +7,7 @@ import cv2.cv2 as cv2
 
 
 # This part must be filled and uncomented 
-***
+"""
 
 m = 1040  # Number of lines per image
 n = 1388  # Number of pixels per line
@@ -22,7 +22,34 @@ tissue = ["Adipose/", "Stomach/", "Intestine/", "Kidney/"]
 magnification = ["5x/", "10x/"]
 depth = ["8 bits/", "16 bits/"]
 
-***
+# Number of images per stack
+imagenes = [[[17, 19, 20, 17, 18, 20, 17, 23, 20, 18], [11, 8, 10, 11, 10]],						# [Adipose, [5x, 10x]]
+            [[15, 19, 19, 19, 16, 16, 16, 14, 15, 14], [9, 12, 12, 12, 11, 11, 10, 11, 11, 12]],	# [Stomach, [5x, 10x]]
+            [[12, 14, 13, 13, 17, 16, 15, 14, 15, 13], [11, 12, 12, 12, 11, 11, 12, 12, 11, 12]],	# [Intestine, [5x, 10x]
+            [[14, 15, 14, 15, 13, 13, 12, 14, 13, 12], [11, 13, 11, 11, 14, 10, 13, 12, 13, 11]]]	# [Kidney, [5x, 10x]
+
+# Position of the maximum in each stack
+maximos = [[[10, 10, 9, 7, 9, 10, 8, 13, 12, 9], [7, 4, 5, 7, 5]],									# [Adipose, [5x, 10x]]
+            [[10, 15, 14, 14, 12, 10, 11, 8, 11, 10], [5, 8, 8, 7, 6, 7, 5, 5, 6, 7]],				# [Stomach, [5x, 10x]]
+            [[9, 12, 11, 10, 12, 12, 10, 10, 12, 9], [6, 6, 7, 6, 7, 6, 7, 7, 6, 7]],				# [Intestine, [5x, 10x]]
+            [[9, 9, 9, 10, 7, 8, 8, 9, 8, 8], [6, 8, 6, 6, 9, 5, 8, 7, 7, 7]]]						# [Kidney, [5x, 10x]]
+
+"""
+
+
+# Names of the algorithm's functions
+algorithms = [abs_tenengrad, brener_grad, entropy, first_gauss_der, img_power, laplacian,
+              norm_variance, sq_grad, tenengrad, thres_abs_grad, thres_pix_count, variance,
+              variance_log_hist, vollath4, vollath5]
+
+# Names of the algorithms (in the SAME ORDER), used to fill the .txt with the results
+names = ('Absolute Tenengrad', 'Brener Gradient', 'Entropy', 'First Gaussian Derivative', 'Image Power', 'Laplacian',
+         'Normalized Variance', 'Square Gradient', 'Tenengrad', 'Thresholded Absolute Gradient',
+         'Thresholded Pixel Count', 'Variance',
+         'Variance of log Histogram', 'Vollath4', 'Vollath5')
+
+# ----------------------------------
+
 
 
 global path
@@ -52,7 +79,7 @@ def play_algs():
 			# Calculates the contrast value for all the algorithms, defining the contrast functions
             for j in range(num_algs):
                 point1 = (time.time() * 1000)
-                alg_table[j][i] = algorithms_opt[j](m, n, thres[j], l, sigma, mean, p, img, hist_range)
+                alg_table[j][i] = algorithms[j](m, n, thres[j], l, sigma, mean, p, img, hist_range)
                 point2 = (time.time() * 1000)
 				
 				# The execution time for each algorithm is measured, but will not be included in the analysis 
@@ -135,7 +162,7 @@ def analysis(alg, real_max, k):
         return [num_imgs[k], num_imgs[k], num_imgs[k], num_imgs[k]]
 
 
-# This function ranks the each criterion in the criteria tables
+# This function is used by semi_quant() to rank each criterion in the criteria tables
 def ranking(crit_table):
     table = [0 for j in range(num_algs)]
     arr_res = [0 for j in range(num_algs)]
@@ -157,31 +184,46 @@ def ranking(crit_table):
             rank_table[k, :, c] = arr_res
 
 
-# This function performs the Semi Quantitative analysis, creates and writes the results in 
+# This function performs the Semi-Quantitative analysis over all the stacks, creates and writes the results in semi_table.txt
 def semi_quant(crit_table):
     semi_table = np.array([[0. for a in range(num_criteria)] for b in range(num_algs)])
     results_semi = np.array([0. for b in range(num_algs)])
+    res_rank_semi = np.array([0. for b in range(num_algs)])
     ranking(crit_table)
     for k in range(num_stacks):
         semi_table[:, :] = semi_table[:, :] + rank_table[k]
 
     for c in range(num_criteria):
         results_semi[:] = results_semi[:] + semi_table[:, c]
+	
+	# Ranks the global scores	
+	arr = np.array(results_semi)
+	arr_copy = np.array(sorted(set(arr)))
+	offset = 1
+	for j in range(arr_copy.size):
+		indexes = (np.where(arr == (arr_copy[j])))[0]
+		for a in range(indexes.size):
+			res_rank_semi[indexes[a]] = offset
+		offset = offset + indexes.size
 
     f = open(path_res + "semi_table.txt", 'a')
 
-    f.write('Algorithm;Accuracy;Range;False maxima;FWHW\n')
+    f.write('Algorithm;Accuracy;Range;False maxima;FWHW;Global score;Ranking\n')
     for j in range(num_algs):
         f.write(names[j])
         for c in range(num_criteria):
             f.write(';' + str(semi_table[j][c]))
+		f.write(';' + str(results_semi[j]))
+		f.write(';' + str(res_rank_semi[j]))
         f.write('\n')
     f.close()
 
 
+# This function performs the Quantitative analysis over all the stacks, creates and writes the results in quant_table.txt
 def quant(crit_table):
     euc_table = np.array([[0. for d in range(num_criteria)] for e in range(num_algs)])
     results_quant = np.array([0. for b in range(num_algs)])
+	res_rank_quant = np.array([0. for b in range(num_algs)])
     to_norm_table[:, :-1, :] = crit_table
     to_norm_table[:, -1, :] = ideal_func
 
@@ -202,51 +244,38 @@ def quant(crit_table):
 
     for c in range(num_criteria):
         results_quant[:] = results_quant[:] + euc_table[:, c]
+		
+	# Ranks the global scores	
+	arr = np.array(results_quant)
+	arr_copy = np.array(sorted(set(arr)))
+	offset = 1
+	for j in range(arr_copy.size):
+		indexes = (np.where(arr == (arr_copy[j])))[0]
+		for a in range(indexes.size):
+			res_rank_quant[indexes[a]] = offset
+		offset = offset + indexes.size
 
     f = open(path_res + "quant_table.txt", 'a')
 
-    f.write('Algoritmo;Accuracy;Range;False maxima;FWHW\n')
+    f.write('Algoritmo;Accuracy;Range;False maxima;FWHW;Global Score;Ranking\n')
     for j in range(num_algs):
         f.write(names[j])
         for c in range(num_criteria):
             f.write(';' + str(euc_table[j][c]))
+		f.write(';' + str(results_quant[j]))
+		f.write(';' + str(res_rank_quant[j]))
         f.write('\n')
     f.close()
 
 
 # -------------------------------- #
 
-algorithms_opt = [abs_tenengrad_opt, brener_grad_opt, entropy_opt, first_gauss_der_opt, img_power_opt, laplacian_opt,
-              norm_variance_opt, sq_grad_opt, tenengrad_opt, thres_abs_grad_opt, thres_pix_count_opt, variance_opt,
-              variance_log_hist_opt, vollath4_opt, vollath5_opt]
-algorithms = [abs_tenengrad, brener_grad, entropy, first_gauss_der, img_power, laplacian,
-              norm_variance, sq_grad, tenengrad, thres_abs_grad, thres_pix_count, variance,
-              variance_log_hist, vollath4, vollath5]
 
-names = ('Absolute Tenengrad', 'Brener Gradient', 'Entropy', 'First Gaussian Derivative', 'Image Power', 'Laplacian',
-         'Normalized Variance', 'Square Gradient', 'Tenengrad', 'Thresholded Absolute Gradient',
-         'Thresholded Pixel Count', 'Variance',
-         'Variance of log Histogram', 'Vollath4', 'Vollath5')
-
-# ----------------------------------
-
-			
-imagenes = [[[17, 19, 20, 17, 18, 20, 17, 23, 20, 18], [11, 8, 10, 11, 10]],
-            [[15, 19, 19, 19, 16, 16, 16, 14, 15, 14], [9, 12, 12, 12, 11, 11, 10, 11, 11, 12]],
-            [[12, 14, 13, 13, 17, 16, 15, 14, 15, 13], [11, 12, 12, 12, 11, 11, 12, 12, 11, 12]],
-            [[14, 15, 14, 15, 13, 13, 12, 14, 13, 12], [11, 13, 11, 11, 14, 10, 13, 12, 13, 11]]]
-
-
-maximos = [[[10, 10, 9, 7, 9, 10, 8, 13, 12, 9], [7, 4, 5, 7, 5]],
-            [[10, 15, 14, 14, 12, 10, 11, 8, 11, 10], [5, 8, 8, 7, 6, 7, 5, 5, 6, 7]],
-            [[9, 12, 11, 10, 12, 12, 10, 10, 12, 9], [6, 6, 7, 6, 7, 6, 7, 7, 6, 7]],
-            [[9, 9, 9, 10, 7, 8, 8, 9, 8, 8], [6, 8, 6, 6, 9, 5, 8, 7, 7, 7]]]
-
-for tej in range(4):  # tejidos 4
-    for mag in range(2):  # magnif 2
-        for prof in range(2):  # profund 2
-            if (tej == 0) and (mag == 1):
-                num_stacks = 5
+for tiss in range(4):  # Tissues studied: Adipose, Stomach, Intestine, Kidney (4)
+    for mag in range(2):  # Magnifications applied: 5x, 10x (2)
+        for dep in range(2):  # Depths used: 8 bits, 16 bits (2)
+            if (tiss == 0) and (mag == 1):
+                num_stacks = 5	# Because for adipose tissue 10x we only have 5 stacks instead of 10
             else:
                 num_stacks = 10
 
@@ -258,19 +287,20 @@ for tej in range(4):  # tejidos 4
             norm_table = np.array([[[0. for a in range(num_criteria)] for b in range(num_algs + 1)] for c in range(num_stacks)])
             dist_table = np.array([[[0. for a in range(num_criteria)] for b in range(num_algs)] for c in range(num_stacks)])
 
-            if prof == 0:
-                thres = [0, 51, 0, 0, 51, 0, 0, 51, 0, 51, 51, 0, 0, 0, 0] # (20%)
+			# Depending on the bit depth, we stablis the threshold and the histogram range
+            if dep == 0:
+                thres = [0, 51, 0, 0, 51, 0, 0, 51, 0, 51, 51, 0, 0, 0, 0] # The threshold is fixed and set to the 20% of the grey level
                 b = 8
                 hist_range = (2 ** b) - 1
             else:
-                thres = [0, 13105, 0, 0, 13105, 0, 0, 13105, 0, 13105, 13105, 0, 0, 0, 0] # (20%)
+                thres = [0, 13105, 0, 0, 13105, 0, 0, 13105, 0, 13105, 13105, 0, 0, 0, 0] # The threshold is fixed and set to the 20% of the grey level
                 b = 16
                 hist_range = (2 ** b) - 1
 
-            path = direct_img + tejido[tej] + magnificacion[mag] + profundidad[prof]
-            path_res = direct_res + tejido[tej] + magnificacion[mag] + profundidad[prof]
-            num_imgs = imagenes[tej][mag]
-            real_maxs = maximos[tej][mag]
+            path = direct_img + tissue[tiss] + magnification[mag] + depth[dep]
+            path_res = direct_res + tissue[tiss] + magnification[mag] + depth[dep]
+            num_imgs = imagenes[tiss][mag]
+            real_maxs = maximos[tiss][mag]
             start_analysis = (time.time() * 1000)
 
             start_algs = (time.time() * 1000)
