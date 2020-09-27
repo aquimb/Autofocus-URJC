@@ -128,20 +128,19 @@ def range_max(alg, max_x):
 
 
 # This function applies the criteria to the calculated contrast functions
+"""
+The anlysis automatically gives the worst score to the contrast functions that have any of the following features:
+- Do not have a maximum
+- Even when they have a maximum, its value is not the maximum value in the series (maximum value != maximum point)
+- Even when the maximum is the maximum value in the series, its height is less than the 20% of the height range of the series
+
+"""
 def analysis(alg, real_max, k):
     max_point_x = np.argmax(alg)
     max_point_y = max(alg)
     min_point_y = min(alg)
     h_tot = max_point_y - min_point_y
 	
-	"""
-	The anlysis automatically gives the worst score to the contrast functions that have any of the following features:
-	- Do not have a maximum
-	- Even when they have a maximum, its value is not the maximum value in the series (maximum value != maximum point)
-	- Even when the maximum is the maximum value in the series, its height is less than the 20% of the height range of the series
-	
-	"""
-
     array = np.array(alg)
     peaks, _ = scipy.signal.find_peaks(array)
     if peaks.size >= 1:
@@ -287,7 +286,7 @@ for tiss in range(4):  # Tissues studied: Adipose, Stomach, Intestine, Kidney (4
             norm_table = np.array([[[0. for a in range(num_criteria)] for b in range(num_algs + 1)] for c in range(num_stacks)])
             dist_table = np.array([[[0. for a in range(num_criteria)] for b in range(num_algs)] for c in range(num_stacks)])
 
-			# Depending on the bit depth, we stablis the threshold and the histogram range
+			# Depending on the bit depth, we stablish the threshold and the histogram range
             if dep == 0:
                 thres = [0, 51, 0, 0, 51, 0, 0, 51, 0, 51, 51, 0, 0, 0, 0] # The threshold is fixed and set to the 20% of the grey level
                 b = 8
