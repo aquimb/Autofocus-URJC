@@ -34,9 +34,6 @@ maximos = [[[10, 10, 9, 7, 9, 10, 8, 13, 12, 9], [7, 4, 5, 7, 5]],									# [Ad
             [[9, 12, 11, 10, 12, 12, 10, 10, 12, 9], [6, 6, 7, 6, 7, 6, 7, 7, 6, 7]],				# [Intestine, [5x, 10x]]
             [[9, 9, 9, 10, 7, 8, 8, 9, 8, 8], [6, 8, 6, 6, 9, 5, 8, 7, 7, 7]]]						# [Kidney, [5x, 10x]]
 
-"""
-
-
 # Names of the algorithm's functions
 algorithms = [abs_tenengrad, brener_grad, entropy, first_gauss_der, img_power, laplacian,
               norm_variance, sq_grad, tenengrad, thres_abs_grad, thres_pix_count, variance,
@@ -47,6 +44,8 @@ names = ('Absolute Tenengrad', 'Brener Gradient', 'Entropy', 'First Gaussian Der
          'Normalized Variance', 'Square Gradient', 'Tenengrad', 'Thresholded Absolute Gradient',
          'Thresholded Pixel Count', 'Variance',
          'Variance of log Histogram', 'Vollath4', 'Vollath5')
+		 
+"""
 
 # ----------------------------------
 
