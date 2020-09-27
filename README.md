@@ -8,6 +8,7 @@ The original idea came up at the URJC with the QUASAR project, developed in coll
 This inspirated us to develop a general methodology and any-kind-of-application implementation for an autofocus solution, whose process is kind of logic, but not negligible at all. 
 
 Long story short (we are in the process of publishing a paper about this), to focus a sample you need to sweep each field of view through the focal range to take a stack of images. Then you use these images to calculate the contrast function of the stack, and its maximum would indicate the best focused position.
+
 How do you calculate the contrast function? With a contrast calculation algorithm, of course! What seems to be the problem then? The problem is that there are many contrast calculation algorithms available, and the optimal one for a certain use varies with the sample and its content.
 
 Well, then, we have to develop some kind of tool capable of selecting the best algorithm to use in a given application. And this is our first step: the creation of an automated analysis that studies a series of stacks with a set of algorithms. The analysis evaluates the performance of the algorithms and grades them, giving as a result a global ranking of those algoritms.
