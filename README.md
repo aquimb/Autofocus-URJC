@@ -21,7 +21,6 @@ MATHERIALS
 To this use we provide:
 - Images: 
   The images used to test our project can be found in the following link:
-  
   https://urjc-my.sharepoint.com/:f:/g/personal/marina_bsanz_urjc_es/EjYdL3WWrCBBpagt8AJ16Q0BFZuvUiw87Da-EJ6MptLGLw?e=qyPgA5
 
   There, 150 stacks of images can be found. Those stacks were taken from 4 different types of mouse tissue (adipose, stomach, intentine and kidney), using 2 magnification settings (5x and 10x), and 2 bit-depth configurations (8 bits and 16 bits), and are filed as follows:
