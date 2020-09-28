@@ -3,6 +3,7 @@
 This is an open source project to develop a fully automated focusing system.
 
 INTRODUCTION
+
 The original idea came up at the URJC with the QUASAR project, developed in collaboration with Cytognos S.L. and UNAV. The project aimed to create an hiperspectral histo-citometer which, in a few words, is like a fancy microscope.
 
 This inspirated us to develop a general methodology and any-kind-of-application implementation for an autofocus solution. We are in the process of publishing a paper about this, but long story short, to focus a sample you need to sweep each field of view though the focal range to take a stack of images. Then, you use these images to calculate the contrast function of the stack, and its maximum would indicate the best focused position.
