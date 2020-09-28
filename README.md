@@ -64,22 +64,4 @@ MATHERIALS
 2- Code
 
 All code has been developed in Python.
-  
-  - algorithms.py
-  
-  Here are included the python codification of all the algorithms evaluated, optimized to perform matrix calculations when possible.
-  
-  More algorithms can be added, but some modifications should be made in the nexts script.
-  
-  The algorithms used are: Absolute Tenengrad, Brener Gradient, Entropy, First Gaussian Derivative, Image Power, Laplacian, Normalized Variance, Square Gradient, Tenengrad, Thresholded Absolute Gradient, Thresholded Pixel Count, Variance, Variance of log Histogram, Vollath4, Vollath5
-  
-  - top.py
-  The full analysis is performed here.
-  
-  It is important before running the analysis to check, fill and uncomment the parameters at the top, such as the size of the images, their path, the number of criteria under evaluation, the number of algoritms...
-  
-  There are also 4 arrays to check:
-  
-  
-	
-  
+
