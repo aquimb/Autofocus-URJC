@@ -76,7 +76,6 @@ To this use we provide:
 	- algorithms: it contains the names of the functions given to the algorithms in algorithms.py. It is used to call the algorithms un a for loop
 	- names: it contaims the names of the algorithms in the SAME ORDER as they are called. It is used to fill the .txt with the results
 	If new algorithms are added, remember to update the arrays algorithms and names, and the variable num_algs
-	
 	If the path to the results is different than the path to the images, a folder structure as the one used for the images is expected by the script, and therefore, must be created.
 	The results given by this stept are:
 	- A data<>.txt for each stack, containing the normalized contrast values resulting of the application of the algorithms (contrast functions)
