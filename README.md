@@ -17,7 +17,7 @@ This is only the first step, and at this point our goal is to test the efectiven
 Those images were studied with 15 algorithms and evaluated according 4 criteria (accuracy, range, false maxima and FWHW) by 2 different analysis (semi-quantitative and quantitative), and the developed tool for this implementation, along with the datasets studied and the results ara availabe here. More details can be found in the following paragraphs.
 
 
-  MATHERIALS
+MATHERIALS
 
 1- Images:
 
@@ -26,5 +26,60 @@ Those images were studied with 15 algorithms and evaluated according 4 criteria 
   https://urjc-my.sharepoint.com/:f:/g/personal/marina_bsanz_urjc_es/EjYdL3WWrCBBpagt8AJ16Q0BFZuvUiw87Da-EJ6MptLGLw?e=qyPgA5
   
   There are 150 stacks of images, taken from 4 different types of mouse tissue (adipose, stomach, intestine and kidney), using 2 magnification settings (5x and 10x), and 2 bit-depth configurations (8 bits and 16 bits). The images are .tif in greyscale and have a resolution of 1388x1040, and are filed as follows:
+  
+	--> Tissue 1 (Adipose)
+  
+		--> Magnification 1 (5x)
+    
+			--> Bit depth 1 (8 bits)
+      
+				--> Stack 1 (S1)
+        
+				--> Stack 2 (S2)
+        
+				--> ...
+        
+			--> Bit depth 2 (16 bits)
+      
+				--> Stack 1 (S1)
+        
+				--> Stack 2 (S2)
+        
+				--> ...
+        
+		--> Magnification 2 (10x)
+    
+			--> Bit depth 1 (8 bits)
+      
+				--> Stack 1 (S1)
+        
+				--> Stack 2 (S2)
+        
+				--> ...
+        
+			--> Bit depth 2 (16 bits)
+      
+				--> Stack 1 (S1)
+        
+				--> Stack 2 (S2)
+        
+				--> ...
+        
+	--> Tissue 2 (Stomach)
+  
+		--> Magnification 1 (5x)
+    
+			--> Bit depth 1 (8 bits)
+      
+			--> Bit depth 2 (16 bits)
+      
+		--> Magnification 2 (10x)
+    
+			--> Bit depth 1 (8 bits)
+      
+			--> Bit depth 2 (16 bits)
+      
+	...  
+  
   
   
