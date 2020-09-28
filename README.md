@@ -2,8 +2,7 @@
 
 This is an open source project to develop a fully automated focusing system.
 
-
-  INTRODUCTION
+INTRODUCTION
 
 The original idea came up at the URJC with the QUASAR project, developed in collaboration with Cytognos S.L. and UNAV. The project aimed to create an hiperspectral histo-citometer which, in a few words, is like a fancy microscope.
 
@@ -20,7 +19,8 @@ Those images were studied with 15 algorithms and evaluated according 4 criteria 
 
   MATHERIALS
 
-1- Images
+1- Images:
+
   The images used to test our project can be found in the following link:
   
   https://urjc-my.sharepoint.com/:f:/g/personal/marina_bsanz_urjc_es/EjYdL3WWrCBBpagt8AJ16Q0BFZuvUiw87Da-EJ6MptLGLw?e=qyPgA5
