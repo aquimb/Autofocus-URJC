@@ -65,46 +65,71 @@ MATHERIALS
 
 All code has been developed in Python.
   1. algorithms.py
+  
     Here are included the python codification of all the algorithms evaluated, optimized to perform matrix calculations when possible.
     More algorithms can be added, but some modifications should be made in the nexts script.
 	The algorithms used are:
 	Absolute Tenengrad, Brener Gradient, Entropy, First Gaussian Derivative, Image Power, Laplacian, Normalized Variance, Square Gradient, Tenengrad, Thresholded Absolute Gradient, Thresholded Pixel Count, Variance, Variance of log Histogram, Vollath4, Vollath5
 	
   2. top.py
+  
     The full analysis is performed here.
 	It is important before running the analysis to check, fill and uncomment the parameters at the top, such as the size of the images, their path, the number of criteria under evaluation, the number of algoritms...
 	There are also 4 arrays to check:
+	
 		- imagenes: it contains the number of images in each stack
+		
 		- maximos: it contains the positions of the maximums determined by an expert
+		
 		These both have the following structure:
+		
 		[ [Adipose, [5x, 10x]],
+		
 		  [Stomach, [5x, 10x]],
+		  
 		  [Intestine, [5x, 10x],
+		  
 		  [Kidney, [5x, 10x] ]
+		  
 		- algorithms: it contains the names of the functions given to the algorithms in algorithms.py. It is used to call the algorithms un a for loop
-		- names: it contaims the names of the algorithms in the SAME ORDER as they are called. It is used to fill the .txt with the results		
+		
+		- names: it contaims the names of the algorithms in the SAME ORDER as they are called. It is used to fill the .txt with the results
+		
 	If new algorithms are added, remember to update the arrays algorithms and names, and the variable num_algs
 	
 	If the path to the results is different than the path to the images, a folder structure as the one used for the images is expected by the script, and therefore, must be created.
 	The results given by this stept are:
+	
 		- A data<>.txt for each stack, containing the normalized contrast values resulting of the application of the algorithms (contrast functions)
+		
 		- A crit_table<>.txt for each stack, with the evaluation of the contrast functions according to the evaluation criteria (Accuracy, Range, False maxima, FWHW)
+		
 		- A semi_table.txt for a set of stacks in the same tissue/magnification/bit depth category, with the results of the semi-quantitative analysis, its global scores and the ranking.
+		
 		- A quant_table.txt for a set of stacks in the same tissue/magnification/bit depth category, with the results of the quantitative analysis, its global scores and the ranking.
   
   3. excel.py
+  
   This script transforms the .txt documents produced by the analysis into excel spreadsheets.
   The results will be the same, but they will be easier to read, as the spreadsheets feature a graphic of the contrast functions for each stack.
   
   
+  
 3- Results:
+
   As mentioned, for each tissue/magnification/bit depth category the top.py script will return:
+  
 	- A data<>.txt for each stack, containing the contrast values resulting of the application of the algorithms (contrast functions)
+	
 	- A crit_table<>.txt for each stack, with the evaluation of the contrast functions according to the evaluation criteria (Accuracy, Range, False maxima, FWHW)
+	
 	- A semi_table.txt with the results of the semi-quantitative analysis, its global scores and the ranking.
+	
 	- A quant_table.txt with the results of the quantitative analysis, its global scores and the ranking.
 	
   And those can be transform into excel spreadsheets by excel.py. This will result in a file for each tissue/magnification category, with the following features:
+  
 	- A sheet for each stack, featuring the normalized contrast values of the contrast functions, the criteria evaluation of these functions, a graphic, the semi-quantitative evaluation of the single stack, and the calculations needed to obtain the squared euclidean distances for the quantitative analysis.
+	
 	- A summary sheet for each bit depth (8 bits and 16 bits), featuring the semi-quantitative evaluation of all the single stacks, the squared euclidean distances of all the single stacks, and the semi-quantitative and quantitative total soceres, global socres and ranking.
   
