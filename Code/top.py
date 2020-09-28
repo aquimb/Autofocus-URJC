@@ -1,7 +1,6 @@
 import time
 import scipy.signal
-from algs_no_opt import *
-from algs_opt import *
+from algorithms import *
 import numpy as np
 import cv2.cv2 as cv2
 
