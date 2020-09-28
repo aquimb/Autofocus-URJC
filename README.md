@@ -25,61 +25,40 @@ MATHERIALS
   
   https://urjc-my.sharepoint.com/:f:/g/personal/marina_bsanz_urjc_es/EjYdL3WWrCBBpagt8AJ16Q0BFZuvUiw87Da-EJ6MptLGLw?e=qyPgA5
   
-  There are 150 stacks of images, taken from 4 different types of mouse tissue (adipose, stomach, intestine and kidney), using 2 magnification settings (5x and 10x), and 2 bit-depth configurations (8 bits and 16 bits). The images are .tif in greyscale and have a resolution of 1388x1040, and are filed as follows:
+  There are 150 stacks of images, taken from 4 different types of mouse tissue (adipose, stomach, intestine and kidney), using 2 magnification settings (5x and 10x), and 2 bit-depth configurations (8 bits and 16 bits). The images are .tif in greyscale and have a resolution of 1388x1040.
   
-	--> Tissue 1 (Adipose)
+  The filing tree used is as follows, and can be changed, but it is important to change the path-generating arrays in the code (tissue, magnification and depth). Also, notice that the stacks' folders are named "S" + the number of the stack, starting at 1.
   
-		--> Magnification 1 (5x)
-    
-			--> Bit depth 1 (8 bits)
-      
-				--> Stack 1 (S1)
-        
-				--> Stack 2 (S2)
-        
-				--> ...
-        
-			--> Bit depth 2 (16 bits)
-      
-				--> Stack 1 (S1)
-        
-				--> Stack 2 (S2)
-        
-				--> ...
-        
-		--> Magnification 2 (10x)
-    
-			--> Bit depth 1 (8 bits)
-      
-				--> Stack 1 (S1)
-        
-				--> Stack 2 (S2)
-        
-				--> ...
-        
-			--> Bit depth 2 (16 bits)
-      
-				--> Stack 1 (S1)
-        
-				--> Stack 2 (S2)
-        
-				--> ...
-        
-	--> Tissue 2 (Stomach)
+  There are 10 stacks in each category, except for Adipose tissue 10x (both 8 and 16 bits), in which there are only 5. The stacks have a variable number of images, as they were taken manually, of arround 10 to 20 images per stack.
   
-		--> Magnification 1 (5x)
-    
-			--> Bit depth 1 (8 bits)
-      
-			--> Bit depth 2 (16 bits)
-      
-		--> Magnification 2 (10x)
-    
-			--> Bit depth 1 (8 bits)
-      
-			--> Bit depth 2 (16 bits)
-      
-	...  
-  
+  - Tissue 1 (Adipose)
+  	- Magnification 1 (5x)
+		- Bit depth 1 (8 bits)
+			- Stack 1 (S1)
+			- Stack 2 (S2)
+			- ...
+		- Bit depth 2 (16 bits)
+			- Stack 1 (S1)
+			- Stack 2 (S2)
+			- ...
+	- Magnification 2 (10x)
+		- Bit depth 1 (8 bits)
+			- Stack 1 (S1)
+			- Stack 2 (S2)
+			- ...
+		- Bit depth 2 (16 bits)
+			- Stack 1 (S1)
+			- Stack 2 (S2)
+			- ...
+  - Tissue 2 (Stomach)
+  	- Magnification 1 (5x)
+		- Bit depth 1 (8 bits)
+		- Bit depth 2 (16 bits)
+	- Magnification 2 (10x)
+		- Bit depth 1 (8 bits)
+		- Bit depth 2 (16 bits)
+
+  ...
+
   
   
