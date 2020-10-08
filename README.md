@@ -14,7 +14,7 @@ Then, we have to develop some kind of tool capable of selecting the best algorit
 
 This is only the first step, and at this point our goal is to test the efectiveness of the analysis and its reliability. For this study we used 150 stacks of images, from 4 different types of mouse tissue (adipose, stomach, intestine and kidney), using 2 magnification settings (5x and 10x), and 2 bit-depth configurations (8 bits and 16 bits).
 
-Those images were studied with 15 algorithms and evaluated according 4 criteria (accuracy, range, false maxima and FWHW) by 2 different analysis (semi-quantitative and quantitative), and the developed tool for this implementation, along with the datasets studied and the results ara availabe here. More details can be found in the following paragraphs.
+Those images were studied with 15 algorithms and evaluated according 4 criteria (accuracy, range, false maxima and FWHW) by 2 different analysis (semi-quantitative and quantitative), and the developed tool for this implementation, along with the datasets studied, and the results ara availabe here. More details can be found in the following paragraphs.
 
 
 MATHERIALS
