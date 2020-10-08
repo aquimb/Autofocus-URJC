@@ -1,4 +1,4 @@
-# Autofocus
+# Autofocus URJC
 
 This is an open source project to develop a fully automated focusing system.
 
