@@ -23,7 +23,7 @@ MATHERIALS
 
   The images used to test our project can be found in the following link:
   
-  10.5281/zenodo.5008894
+  https://doi.org/10.5281/zenodo.5008894
   
   There are 150 stacks of images, taken from 4 different types of mouse tissue (adipose, stomach, intestine and kidney), using 2 magnification settings (5x and 10x), and 2 bit-depth configurations (8 bits and 16 bits). The images are .tif in greyscale and have a resolution of 1388x1040.
   
