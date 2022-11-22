@@ -131,5 +131,5 @@ All code has been developed in Python.
   
 	- A sheet for each stack, featuring the normalized contrast values of the contrast functions, the criteria evaluation of these functions, a graphic, the semi-quantitative evaluation of the single stack, and the calculations needed to obtain the squared euclidean distances for the quantitative analysis.
 	
-	- A summary sheet for each bit depth (8 bits and 16 bits), featuring the semi-quantitative evaluation of all the single stacks, the squared euclidean distances of all the single stacks, and the semi-quantitative and quantitative total soceres, global socres and ranking.
+	- A summary sheet for each bit depth (8 bits and 16 bits), featuring the semi-quantitative evaluation of all the single stacks, the squared euclidean distances of all the single stacks, and the semi-quantitative and quantitative total soceres, global scores and ranking.
   
